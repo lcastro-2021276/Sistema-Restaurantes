@@ -1,0 +1,209 @@
+Sistema de Gestión de Restaurantes – API REST
+📌 Descripción
+
+Este proyecto corresponde al avance parcial (35%) del Sistema de Gestión de Restaurantes, desarrollado como una API REST en ASP.NET Core Web API.
+
+El objetivo de esta entrega es implementar la estructura base del backend, incluyendo:
+
+Configuración de la base de datos
+
+Modelos relacionales
+
+Integridad referencial
+
+Migración inicial
+
+Conexión funcional a SQL Server
+
+Este avance representa la base estructural sobre la cual se desarrollarán los servicios completos en la entrega final.
+
+🏗️ Arquitectura del Proyecto
+
+El sistema está organizado en una arquitectura por capas para mantener una separación clara de responsabilidades:
+
+Restaurante.Api           → Proyecto principal (Web API)
+Restaurante.Domain        → Entidades del dominio
+Restaurante.Persistence   → DbContext y configuración de base de datos
+
+📂 Capas
+🔹 Domain
+
+Contiene las entidades principales del sistema:
+
+User
+
+Restaurant
+
+Reservation
+
+MenuItem
+
+🔹 Persistence
+
+Contiene:
+
+ApplicationDbContext
+
+Configuración de relaciones
+
+DbSet
+
+Migraciones
+
+🔹 API
+
+Contiene:
+
+Program.cs
+
+Configuración de servicios
+
+Swagger
+
+Conexión a base de datos
+
+🗄️ Modelo Relacional (35%)
+Entidades Implementadas
+👤 User
+
+Representa al usuario que puede realizar reservas.
+
+Relación:
+
+Un usuario puede tener muchas reservas (1:N)
+
+🏬 Restaurant
+
+Representa un restaurante registrado en el sistema.
+
+Relaciones:
+
+Un restaurante puede tener muchas reservas (1:N)
+
+Un restaurante puede tener muchos ítems de menú (1:N)
+
+📅 Reservation
+
+Representa una reserva realizada por un usuario.
+
+Relaciones:
+
+Pertenece a un usuario
+
+Pertenece a un restaurante
+
+🍔 MenuItem
+
+Representa un producto del menú de un restaurante.
+
+Relación:
+
+Pertenece a un restaurante
+
+🔗 Relaciones Implementadas
+
+User (1) → (N) Reservation
+
+Restaurant (1) → (N) Reservation
+
+Restaurant (1) → (N) MenuItem
+
+Las relaciones están configuradas mediante Fluent API en OnModelCreating.
+
+⚙️ Tecnologías Utilizadas
+
+ASP.NET Core Web API
+
+Entity Framework Core
+
+SQL Server
+
+Swagger (OpenAPI)
+
+.NET 8
+
+🛠️ Configuración de Base de Datos
+
+La conexión se encuentra en appsettings.json:
+
+"ConnectionStrings": {
+  "DefaultConnection": "Server=localhost;Database=RestauranteDB;Trusted_Connection=True;TrustServerCertificate=True;"
+}
+
+
+El DbContext se registra en Program.cs mediante:
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
+
+🚀 Migraciones
+
+Para crear la migración inicial:
+
+dotnet ef migrations add InitialCreate -p Restaurante.Persistence -s Restaurante.Api
+
+
+Para aplicar la migración:
+
+dotnet ef database update -p Restaurante.Persistence -s Restaurante.Api
+
+
+Esto genera automáticamente:
+
+Base de datos
+
+Tablas
+
+Llaves primarias
+
+Llaves foráneas
+
+Integridad relacional
+
+✅ Pruebas de Integridad Relacional
+
+Se verificó que:
+
+No se puede crear una reserva con un UserId inexistente
+
+No se puede crear una reserva con un RestaurantId inexistente
+
+No se puede crear un MenuItem sin un Restaurant válido
+
+Esto confirma que la integridad referencial está correctamente implementada.
+
+📊 Alcance del 35%
+
+Esta entrega incluye:
+
+✔ Estructura base del proyecto
+✔ Configuración de base de datos
+✔ Modelo relacional funcional
+✔ Migración inicial
+✔ Integridad referencial
+✔ Conexión activa a SQL Server
+
+No incluye aún:
+
+✖ Lógica de negocio avanzada
+✖ Validaciones complejas
+✖ Autenticación avanzada
+✖ Servicios completos
+
+Estos elementos serán desarrollados en la entrega final.
+
+👥 Equipo de Desarrollo
+
+Proyecto desarrollado como parte del curso de desarrollo backend.
+
+📌 Estado del Proyecto
+
+🟡 En desarrollo – Avance estructural completado (35%)
+
+📄 Licencia
+
+Este proyecto es desarrollado con fines académicos.
+
+© 2026 – [Luis Fernando Castro Xicon]
